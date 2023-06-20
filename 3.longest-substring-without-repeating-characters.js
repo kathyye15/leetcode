@@ -10,23 +10,26 @@
  * @return {number}
  */
 var lengthOfLongestSubstring = function(s) {
-  let seen = {};
   let maxLength = 0;
-  let tempLength = 0;
-  //iterate through the string
   for (let i = 0; i < s.length; i++) {
-      let char = s[i];
-      if (!seen[char]) {
-          seen[char] = char;
-          tempLength++;
-          maxLength = Math.max(tempLength, maxLength);
-      } else {
-          seen = {};
-          seen[char] = char;
-          tempLength = 1;
-      }
+      let subString = s.slice(i);
+      let tempLength = length(subString);
+      maxLength = Math.max(maxLength, tempLength);
   }
   return maxLength;
+  //helper function
+    function length(string) {
+    let seen = {};
+    for (let i = 0; i < string.length; i++) {
+        let char = string[i];
+        if (!seen[char]) {
+            seen[char] = char
+        } else {
+            return i;
+        }
+    }
+    return string.length;
+  }
 };
 // @lc code=end
 
