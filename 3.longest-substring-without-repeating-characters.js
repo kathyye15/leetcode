@@ -15,6 +15,9 @@ var lengthOfLongestSubstring = function(s) {
       let subString = s.slice(i);
       let tempLength = length(subString);
       maxLength = Math.max(maxLength, tempLength);
+      if (tempLength === subString.length) {
+          return maxLength;
+      }
   }
   return maxLength;
   //helper function
