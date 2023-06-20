@@ -36,3 +36,5 @@ var lengthOfLongestSubstring = function(s) {
 };
 // @lc code=end
 
+//time complexity - quadratic
+//space complexity - linear
