@@ -15,32 +15,23 @@
  //c - length 1 to 5 * 10^4, lowercase English letters
  //e -
  var isAnagram = function(s, t) {
-  //check lengths, if dont match, return false
+  //if s and t length dont match, return false
   if (s.length !== t.length) return false;
-  //create seen object
-  let seen = {};
-  //iterate through first string, store character count in seen object
-  for (char of s) {
-      if (!seen[char]) {
-          seen[char] = 1;
-      } else {
-          seen[char]++;
-      }
+  //create fillerArray of 26 length and fill with 0's
+  let fillerArray = new Array(26).fill(0);
+  //iterate through string length
+  for (let i = 0; i < s.length; i++) {
+      //given the index, check letter at that index in both s and t
+      //use charCode at letter minus charCode value of a to find an index value between 0 to 25, increment for s and decrement for t
+      fillerArray[s[i].charCodeAt() - 'a'.charCodeAt()]++;
+      fillerArray[t[i].charCodeAt() - 'a'.charCodeAt()]--;
   }
-  //iterate through second string 
-  for (char of t) {
-      //if count is already 0, return false
-      if (seen[char] === 0) return false;
-      //decrement character count
-      seen[char]--;
+  //iterate through fillerArray
+  for (let val of fillerArray) {
+      //if val is not 0, return false
+      if (val) return false;
   }
-  //iterate through second string to check if all char count is 0, return true if so, return false if not all 0
-  for (char of t) {
-      if (seen[char]) return false;
-  }
-  for (char of s) {
-      if (seen[char]) return false;
-  }
+  //return true
   return true;
 };
 // @lc code=end
