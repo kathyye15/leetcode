@@ -10,31 +10,35 @@
  * @return {number}
  */
 var lengthOfLongestSubstring = function(s) {
-  let maxLength = 0;
-  for (let i = 0; i < s.length; i++) {
-      let subString = s.slice(i);
-      let tempLength = length(subString);
-      maxLength = Math.max(maxLength, tempLength);
-      if (tempLength === subString.length) {
-          return maxLength;
-      }
-  }
-  return maxLength;
-  //helper function
-    function length(string) {
+    if (s.length < 2) return s.length;
+    let maxLength = 0;
     let seen = {};
-    for (let i = 0; i < string.length; i++) {
-        let char = string[i];
-        if (!seen[char]) {
-            seen[char] = char
-        } else {
-            return i;
+    let start = 0;
+    for (var i = 0; i < s.length; i++) {
+        let char = s[i];
+        //if char not seen
+        if (seen[char] === undefined) {
+            //store in seen;
+            seen[char] = i;
+            //maxLength = Math.max(maxLength, i + 1 - start);
+            maxLength = Math.max(maxLength, i + 1 - start);
+        }
+        //if char seen
+        else {
+            //while firstChar doesn't match currentChar, increment start until they match
+            while (s[start] !== char && start < s.length) {
+                seen[s[start]] = undefined;
+                start++;
+            } 
+            //when they match; increment start; update matching char;
+            seen[char] = i;
+            start++;
+            maxLength = Math.max(maxLength, i + 1 - start);
         }
     }
-    return string.length;
-  }
+    return maxLength;
 };
 // @lc code=end
 
-//time complexity - O(n^3)
+//time complexity - O(n)
 //space complexity - O(n)
