@@ -16,35 +16,22 @@
  * @param {ListNode[]} lists
  * @return {ListNode}
  */
-var mergeKLists = function(lists) {
+let mergeKLists = function(lists) {
   //create a values list;
   let values = [];
 
-  //create sinkDown helper function
-  function sinkDown() {
-    let idx = values.length - 1;
-    let value = values[idx];
-    let parentIdx = Math.floor((idx-1)/2);
-    let parentVal = values[parentIdx];
-    while (idx > 0 && value >= parentVal) {
-      values[parentIdx] = value;
-      values[idx] = parentVal;
-      idx = parentIdx;
-    }
-  }
-
-  //loop through listsArray, for each node in the array, insert value to values array via minBinaryHeap pattern
+  //loop through listsArray, for each node in the array, insert value to values array
   for (let i = 0; i< lists.length; i++) {
     let currentList = lists[i];
     while (currentList) {
       values.push(currentList.val);
-      sinkDown();
       currentList = currentList.next;
     }
   }
 
   //return a linkedList built from values list;
-  if (values.length === 0) return new ListNode();
+  if (values.length === 0) return null;;
+  values.sort((a,b) => a - b);
   let sorted = new ListNode(values[0]);
   let prev = sorted;
   for (let j = 1; j < values.length + 1; j++) {
@@ -60,3 +47,13 @@ var mergeKLists = function(lists) {
 };
 // @lc code=end
 
+//time: O(n log n)
+//space: O(n)
+
+
+
+//todo binary heap solution: time: 
+//O(m log k)
+//space: O(k) 
+//m representing number of lists * number of nodes
+//k representing number of lists
