@@ -51,7 +51,6 @@ let mergeKLists = function(lists) {
 //space: O(n)
 
 
-
 //todo binary heap solution: time: 
 //O(m log k)
 //space: O(k) 
