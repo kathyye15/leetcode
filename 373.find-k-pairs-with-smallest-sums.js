@@ -11,11 +11,11 @@
  * @param {number} k
  * @return {number[][]}
  */
-class MinPriorityQueue {
+class Mpq {
   constructor() {
       this.values = [];
   }
-  size() {
+  get size() {
       return this.values.length;
   }
   //use sum as priority num
@@ -82,19 +82,33 @@ class MinPriorityQueue {
       }
   }
 }
+
 var kSmallestPairs = function(nums1, nums2, k) {
 //create a new MinPriorityQueue
+let pq = new Mpq();
 //create result array
+let result = [];
 
-//enqueue all pair combos with num1 values & num2 index 0 val
-
+//enqueue all pair combos with nums1 index 0 val & nums2 values
+for (let i = 0; i < nums2.length; i++) {
+  pq.enqueue([0, i], nums1[0] + nums2[i]);
+}
 //while result length is less than k and pq size is > 0
+while (result.length < k && pq.size > 0) {
   //dequeue indexes (ind1, ind2) 
+  let indexes = pq.dequeue().indexes;
   //push corresponding values using indexes into result array
-  //enqueue next possible choice (ind1 + 1, ind2, sum)
+  let idx1 = indexes[0];
+  let idx2 = indexes[1];
+  result.push([nums1[idx1], nums2[idx2]]);
+  //if possible, enqueue next choice (ind1 + 1, ind2, sum)
+  if (idx1 + 1 < nums1.length) {
+      pq.enqueue([idx1 + 1, idx2], nums1[idx1 + 1] + nums2[idx2]);
+  }
+}
 
 //return result array
-
+return result;
 };
 // @lc code=end
 
