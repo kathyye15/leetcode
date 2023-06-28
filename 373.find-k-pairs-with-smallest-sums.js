@@ -34,7 +34,7 @@ class MinPriorityQueue {
       let topPriority = this.values[0];
       let end = this.values.pop();
       if (this.values.length > 0) {
-          this.values[0] = this.values.pop();
+          this.values[0] = end;
           this.sinkDown();
       }
       return topPriority;
@@ -58,15 +58,16 @@ class MinPriorityQueue {
           let leftChildIdx = 2 * currIdx + 1;
           let rightChildIdx = 2 * currIdx + 2;
           let swapIdx = null;
+          let leftChild, rightChild;
 
           if(leftChildIdx < this.values.length){
-              let leftChild = this.values[leftChildIdx];
+              leftChild = this.values[leftChildIdx];
               if(leftChild.sum < unsortedEl.sum) {
                   swapIdx = leftChildIdx;
               }
           }
           if(rightChildIdx < this.values.length){
-              let rightChild = this.values[rightChildIdx];
+              rightChild = this.values[rightChildIdx];
               if(
                   rightChild.sum < unsortedEl.sum && 
                   rightChild.sum < leftChild.sum
