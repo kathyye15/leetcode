@@ -21,18 +21,64 @@ class MinPriorityQueue {
   //use sum as priority num
   enqueue(indexes, sum) {
       //create element object
+      let element = {
+          indexes,
+          sum
+      }
       //push element into this.values;
+      this.values.push(element);
       //call bubbleUp;
+      this.bubbleUp();
   }
   dequeue() {
-      //pop the element
-      //call sinkDown
+      let topPriority = this.values[0];
+      let end = this.values.pop();
+      if (this.values.length > 0) {
+          this.values[0] = this.values.pop();
+          this.sinkDown();
+      }
+      return topPriority;
   }
   bubbleUp() {
-
+      let currIdx = this.values.length - 1;
+      const currEl = this.values[currIdx];
+      while(currIdx > 0) {
+          let parentIdx = Math.floor((currIdx - 1/2));
+          let parentEl = this.values[parentIdx];
+          if (currEl.sum >= parentEl.sum) break;
+          this.values[parentIdx] = currEl;
+          this.values[currIdx] = parentEl;
+          currIdx = parentIdx;
+      }
   }
   sinkDown() {
-      
+      let currIdx = 0;
+      const unsortedEl = this.values[0];
+      while(true){
+          let leftChildIdx = 2 * currIdx + 1;
+          let rightChildIdx = 2 * currIdx + 2;
+          let swapIdx = null;
+
+          if(leftChildIdx < this.values.length){
+              let leftChild = this.values[leftChildIdx];
+              if(leftChild.sum < unsortedEl.sum) {
+                  swapIdx = leftChildIdx;
+              }
+          }
+          if(rightChildIdx < this.values.length){
+              let rightChild = this.values[rightChildIdx];
+              if(
+                  rightChild.sum < unsortedEl.sum && 
+                  rightChild.sum < leftChild.sum
+              ) {
+                 swapIdx = rightChildIdx;
+              }
+          }
+          if(swapIdx === null) break;
+          this.values[currIdx] = this.values[swapIdx];
+          this.values[swapIdx] = unsortedEl;
+          currIdx = swapIdx;
+      }
   }
 }
 var kSmallestPairs = function(nums1, nums2, k) {
