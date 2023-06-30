@@ -19,66 +19,64 @@ c - number of row,columns is 2 - 2*10^4
     //ri is 1 to row, ci is 1 to col
 e -
 */
-var latestDayToCross = function(row, col, cells) {
-  //create matrix of 0s and 1s to indicate land and water units
-  let matrix = [];
-  let possiblePath = {};
-
-  for (let i = 0; i < row; i++) {
-      matrix.push(new Array(col).fill(0));
-      possiblePath[i] = 0;
-  }
-  let lastDay = 0;
-  //iterate through cells
-  for (let j = 0; j < cells.length; j++) {
-      let cell = cells[j];
-      //mark matrix with water
-      let currRow = cell[0] - 1;
-      let currCol = cell[1] - 1;
-      matrix[currRow][currCol] = 1;
-      //if water unit is in the possiblePath, find new possiblePath
-      if (possiblePath[currRow] === currCol) {
-          let newPath = findPossiblePath(matrix);
-          //if cannot find possible path, return ith day as lastDay
-          if (!newPath) {
-              lastDay = j;
-              return lastDay;
-          } 
-      }
-  }
-  return lastDay;
-};  
-
-//helper
-//findPossiblePath(matrix) function
-function findPossiblePath(matrix) {
-
-  function getAll0s(arr) {
-      let result = 0;
-      for (let i = 0; i < arr.length; i++) {
-          if (arr[i] === 0) {
-              result.push(i);
-          }
-      }
-      return result;
-  }
-
-  let firstRow = matrix[0];
-  //iterate through first row in matrix
-  for (let k = 0; k < firstRow.length; k++) {
-      let unit = matrix[k];
-      //if 0 (land)
-      while (unit === 0) {
-      //check second row (left, right, and down contendors for paths)
-      let left = check(left);
-      let right = check(right);
-      let down = check(down);
-      //when hit end, update path, return true;
-      //when hit blocked paths (before the last row), continue; 
-      }
-  }
-  //return false; (no more possible paths)
+function possiblePath(matrix) {
+    let landIndexes = [];
+    function getAll0s(arr) {
+        let result = [];
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] === 0) {
+                result.push(i);
+            }
+        }
+        return result;
+    }
+    let firstRow = matrix[0];
+    landIndexes = getAll0s(firstRow);
+    //iterate through matrix starting from second row
+    for (let k = 1; k < matrix.length; k++) {
+        let currRow = matrix[k];
+        let currRowIndexes = getAll0s(currRow);
+        let toBeContinued = false;
+        for (idx of landIndexes) {
+            let downPath = currRowIndexes.includes(idx);
+            if (k === matrix.length - 1 && downPath) {
+                return true;
+            }
+            if (downPath) {
+                landIndexes = currRowIndexes;
+                toBeContinued = true;
+                break;
+            } 
+        }
+        if (toBeContinued) continue;
+    }
+    return false;
 }
+
+var latestDayToCross = function(row, col, cells) {
+    //create matrix of 0s and 1s to indicate land and water units
+    let matrix = [];
+
+    for (let i = 0; i < row; i++) {
+        matrix.push(new Array(col).fill(0));
+    }
+    let lastDay = 0;
+    //iterate through cells
+    for (let j = 0; j < cells.length; j++) {
+        let cell = cells[j];
+        //mark matrix with water
+        let currRow = cell[0] - 1;
+        let currCol = cell[1] - 1;
+        matrix[currRow][currCol] = 1;
+        let path = possiblePath(matrix);
+        //if cannot find possible path, return ith day as lastDay
+        if (!path) {
+            lastDay = j;
+            return lastDay;
+        } 
+    }
+    return lastDay;
+};  
 
 // @lc code=end
 
