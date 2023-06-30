@@ -20,26 +20,65 @@ c - number of row,columns is 2 - 2*10^4
 e -
 */
 var latestDayToCross = function(row, col, cells) {
-    //the ith day is the lastDay 
-    //create matrix of 0s and 1s to indicate land and water units
-    //create possible path to be first column down
+  //create matrix of 0s and 1s to indicate land and water units
+  let matrix = [];
+  let possiblePath = {};
 
-    //findPossiblePath(matrix) function
-        //iterate through first row in matrix
-            //if 0 (land)
-                //check second row (left, right, and down for paths)
-                //when hit end, return true
+  for (let i = 0; i < row; i++) {
+      matrix.push(new Array(col).fill(0));
+      possiblePath[i] = 0;
+  }
+  let lastDay = 0;
+  //iterate through cells
+  for (let j = 0; j < cells.length; j++) {
+      let cell = cells[j];
+      //mark matrix with water
+      let currRow = cell[0] - 1;
+      let currCol = cell[1] - 1;
+      matrix[currRow][currCol] = 1;
+      //if water unit is in the possiblePath, find new possiblePath
+      if (possiblePath[currRow] === currCol) {
+          let newPath = findPossiblePath(matrix);
+          //if cannot find possible path, return ith day as lastDay
+          if (!newPath) {
+              lastDay = j;
+              return lastDay;
+          } 
+      }
+  }
+  return lastDay;
+};  
 
-        //return false; (no more possible paths)
+//helper
+//findPossiblePath(matrix) function
+function findPossiblePath(matrix) {
 
+  function getAll0s(arr) {
+      let result = 0;
+      for (let i = 0; i < arr.length; i++) {
+          if (arr[i] === 0) {
+              result.push(i);
+          }
+      }
+      return result;
+  }
 
+  let firstRow = matrix[0];
+  //iterate through first row in matrix
+  for (let k = 0; k < firstRow.length; k++) {
+      let unit = matrix[k];
+      //if 0 (land)
+      while (unit === 0) {
+      //check second row (left, right, and down contendors for paths)
+      let left = check(left);
+      let right = check(right);
+      let down = check(down);
+      //when hit end, update path, return true;
+      //when hit blocked paths (before the last row), continue; 
+      }
+  }
+  //return false; (no more possible paths)
+}
 
-    //iterate through cells
-        //mark matrix with water
-        //check if possible path is good, if so continue
-        //else
-            //find new possible path
-            //if cannot find possible path, return ith day 
-}; 
 // @lc code=end
 
