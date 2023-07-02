@@ -9,17 +9,28 @@
  * @param {string} s
  * @return {boolean}
  */
-var isValid = function(s) {
-  if (s[0] == ")" || s[0] == ']' || s[0] == '}') return false;
-  for (let i = 0; i < s.length; i++) {
-      let pointer1 = s[i];
-      let pointer2 = s[++i];
-      if (pointer1 == '(' && pointer2 == ')') continue;
-      if (pointer1 == '[' && pointer2 == ']') continue;
-      if (pointer1 == '{' && pointer2 == '}') continue;
-      return false;
+
+//stack approach
+var isValid = function(s) {   
+  const stack = [];
+  const map = {
+    '(': ')',
+    '[': ']',
+    '{': '}'
   }
-  return true;
+  
+  for (let i = 0 ; i < s.length ; i++) {
+      let c = s[i];
+      if (map[c]) {
+        stack.push(map[c])
+      } else if (c !== stack.pop()) {
+        return false;
+      } 
+  }
+  
+  return !stack.length;
 };
 // @lc code=end
+//time: o(n)
+//space: o(n)
 
