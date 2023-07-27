@@ -10,38 +10,28 @@
  * @param {string} str2
  * @return {string}
  */
-var gcdOfStrings = function(str1, str2) {
-  if (str2.length > str1.length) {
-      let temp = str1;
-      str1 = str2;
-      str2 = temp;
+ //i - 2 strings
+ //o - string
+ //c - input strings are all uppercase, string length 1 to 1000
+ //e - 
+ var gcdOfStrings = function(str1, str2) {
+  if (str1 + str2 !== str2 + str1) {
+      return '';
   }
-  //find the remainder length between str1 and str2
-  let remainder = str1.length % str2.length;
-  let divisorWord;
-  //if there is a remainder, then find the last remainder word and check if it matches string2 (completely or a portion of it is fine) 
-  if (remainder) {
-      divisorWord = str1.slice(str1.length - remainder);
-  } 
-  if (divisorWord) {
-      for (let i = 0; i < divisorWord.length; i++) {
-          if (str2[i] !== divisorWord[i]) {
-              return "";
-          }
-      }
+  let gcd = 1;
+  if (str2.length % str1.length === 0) {
+      gcd = str1.length;
+  } else if (str1.length % str2.length === 0) {
+      gcd = str2.length;
   } else {
-      divisorWord = str2;
-  }
-  //iterate through string1 with divisorWord to check if it keeps matching
-  
-  for (let i = 0; i < str1.length; i++) {
-      let index = i % divisorWord.length;
-      //if no match, return ""
-      if (str1[i] !== divisorWord[index]) {
-          return "";
+      let remainder = Math.abs(str2.length - str1.length);
+      if (str1.length % remainder === 0) {
+          gcd = remainder;
+      } else {
+          gcd = str1.length % remainder;
       }
   }
-  return divisorWord;
+  return str1.substring(0, gcd);
 };
 // @lc code=end
 
