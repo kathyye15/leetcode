@@ -15,23 +15,21 @@
  //c - input strings are all uppercase, string length 1 to 1000
  //e - 
  var gcdOfStrings = function(str1, str2) {
+  //check if the substrings share a common substring
   if (str1 + str2 !== str2 + str1) {
       return '';
   }
-  let gcd = 1;
-  if (str2.length % str1.length === 0) {
-      gcd = str1.length;
-  } else if (str1.length % str2.length === 0) {
-      gcd = str2.length;
-  } else {
-      let remainder = Math.abs(str2.length - str1.length);
-      if (str1.length % remainder === 0) {
-          gcd = remainder;
-      } else {
-          gcd = str1.length % remainder;
+  //slight optimization, checking minLength to lower iteration
+  let minLength = Math.min(str1.length, str2.length);
+  for (let l = minLength; l > 0; l--) {
+      //check if str1 and str2 lengths are divisable with length
+      if ((str1.length % l === 0) && (str2.length % l === 0)) {
+              //return str1 substring up to that length
+              return str1.substring(0, l);
       }
   }
-  return str1.substring(0, gcd);
 };
+//time: o(n)
+//space: o(1)
 // @lc code=end
 
