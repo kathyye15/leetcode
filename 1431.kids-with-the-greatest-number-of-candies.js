@@ -10,23 +10,10 @@
  * @param {number} extraCandies
  * @return {boolean[]}
  */
-var kidsWithCandies = function(candies, extraCandies) {
-  let max = 0;
-  let res = [];
-  for (let num of candies) {
-      if (num > max) {
-          max = num;
-      }
-  }
-  for (let i = 0; i < candies.length; i++) {
-      let candyNum = candies[i];
-      if (candyNum + extraCandies >= max) {
-          res.push(true);
-      } else {
-          res.push(false);
-      }
-  }
-  return res;
+var kidsWithCandies = function (candies, extraCandies) {
+  let max = Math.max(...candies);
+  return candies.map((candyBag) => candyBag + extraCandies >= max);
 };
+//time: o(n)
+//space: o(1)
 // @lc code=end
-
