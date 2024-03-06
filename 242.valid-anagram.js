@@ -10,29 +10,27 @@
  * @param {string} t
  * @return {boolean}
  */
- //i - two strings
- //o - boolean
- //c - length 1 to 5 * 10^4, lowercase English letters
- //e -
- var isAnagram = function(s, t) {
-  //if s and t length dont match, return false
-  if (s.length !== t.length) return false;
-  //create fillerArray of 26 length and fill with 0's
-  let fillerArray = new Array(26).fill(0);
-  //iterate through string length
-  for (let i = 0; i < s.length; i++) {
-      //given the index, check letter at that index in both s and t
-      //use charCode at letter minus charCode value of a to find an index value between 0 to 25, increment for s and decrement for t
-      fillerArray[s[i].charCodeAt() - 'a'.charCodeAt()]++;
-      fillerArray[t[i].charCodeAt() - 'a'.charCodeAt()]--;
+var isAnagram = function (s, t) {
+  let count = {};
+  for (let letter of s) {
+    if (!count[letter]) {
+      count[letter] = 1;
+    } else {
+      count[letter]++;
+    }
   }
-  //iterate through fillerArray
-  for (let val of fillerArray) {
-      //if val is not 0, return false
-      if (val) return false;
+
+  for (let letter of t) {
+    if (count[letter]) {
+      count[letter]--;
+      if (!count[letter]) {
+        delete count[letter];
+      }
+    } else {
+      return false;
+    }
   }
-  //return true
-  return true;
+  return Object.keys(count).length == 0 ? true : false;
 };
 // @lc code=end
 //time complexity - O(n)
