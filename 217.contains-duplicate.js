@@ -9,16 +9,13 @@
  * @param {number[]} nums
  * @return {boolean}
  */
-var containsDuplicate = function(nums) {
-  let seen = {};
-  //iterate through array, if value in seen, return false
-  for (let val of nums) {
-      if (seen[val]) return true;
-      seen[val] = 1;
+var containsDuplicate = function (nums) {
+  let dupeSet = new Set(nums);
+  if (dupeSet.size < nums.length) {
+    return true;
   }
   return false;
 };
 // @lc code=end
 // time complexity - O(n)
 // space complexity - O(n)
-
